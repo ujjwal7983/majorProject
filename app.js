@@ -111,6 +111,10 @@ app.use("/", userRouter);
 //   res.status(404).send("Page Not Found");
 // });
 
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 
 
 
