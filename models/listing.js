@@ -3,41 +3,59 @@ const Schema = mongoose.Schema;
 const Review = require("./review.js");
 
 const listingSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    description: String,
-    image: {
-        url: String,
-        filename: String
-},
+  title: {
+    type: String,
+    required: true,
+    index: true,        
+  },
+  description: String,
+  image: {
+    url: String,
+    filename: String
+  },
+  price: Number,
 
-    price: Number,
-    location: String,
-    country: String,
-    reviews: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Review",
-    }
-  ],
+  location: {
+    type: String,
+    index: true        
+  },
+
+  country: String,
+
+  amenities: {
+    type: [String],    
+    index: true
+  },
+
+  isTrending: {
+    type: Boolean,
+    default: false,
+    index: true
+  },
+
+  reviews: [{
+    type: Schema.Types.ObjectId,
+    ref: "Review",
+  }],
+
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+
   geometry: {
     type: {
-    type: String,
-    enum: ['Point'],
-    required: true,
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true 
+    },
   },
-  coordinates: {
-    type: [Number],
-    required: true 
-  },
-},
-});
+}, { timestamps: true }); 
+
 
 listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing) {
